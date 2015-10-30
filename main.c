@@ -24,10 +24,12 @@ void clean();
 
 void generate_ios_images(char *input_name, char *output_name);
 void generate_android_images(char *input_name, char *output_name);
+void generate_win_images(char *input_name, char *output_name);
 
 // iOS icon sizes
 int ios_sizes[] = {167, 76, 152, 120, 180, 60, 87, 58, 29, 66, 44};
 int android_sizes[] = {48, 72, 96, 144, 192, 512, 16, 24, 32, 64, 128};
+int win_sizes[] = {170, 99, 71, 360, 210, 150, 106, 62, 44, 120, 70, 50, 58, 33, 24};
 
 
 int main(int argc, char *argv[]) {
@@ -41,6 +43,7 @@ int main(int argc, char *argv[]) {
 
     generate_ios_images(argv[1], argv[2]);
     generate_android_images(argv[1], argv[2]);
+    generate_win_images(argv[1], argv[2]);
 /*
     resize_image("lena.jpg", "Bessel.png", BesselFilter);
     resize_image("lena.jpg", "Catrom.png", CatromFilter );
@@ -73,7 +76,6 @@ void generate_ios_images(char *input_name, char *output_name) {
         int size = ios_sizes[i];
 	char *fixed_name = calloc(512, sizeof(char));
 	sprintf(fixed_name,"%s%s%d%s", "iOS/", output_name, ios_sizes[i], ".png");
-        printf("ios name is %s\n", fixed_name);
 	resize_image(input_name, fixed_name, SincFilter, size);
 	free(fixed_name);
     }   
@@ -85,10 +87,23 @@ void generate_android_images(char *input_name, char *output_name) {
     mkdir("Android", 0755);
 
     for (int i = 0; i < count; i++) {
-        int size = ios_sizes[i];
+        int size = android_sizes[i];
 	char *fixed_name = calloc(512, sizeof(char));
 	sprintf(fixed_name,"%s%s%d%s", "Android/", output_name, android_sizes[i], ".png");
-	printf("android name is %s\n", fixed_name);
+        resize_image(input_name, fixed_name, SincFilter, size);
+	free(fixed_name);
+    }   
+}
+
+void generate_win_images(char *input_name, char *output_name) {
+   
+    int count = 15;
+    mkdir("WinPhone", 0755);
+
+    for (int i = 0; i < count; i++) {
+        int size = win_sizes[i];
+	char *fixed_name = calloc(512, sizeof(char));
+	sprintf(fixed_name,"%s%s%d%s", "WinPhone/", output_name, win_sizes[i], ".png");
         resize_image(input_name, fixed_name, SincFilter, size);
 	free(fixed_name);
     }   
